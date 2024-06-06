@@ -7,9 +7,11 @@ const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const expressValidator = require('express-validator');
+const passport = require('./config/passport');
 const router = require('./routes/routes');
 
 const db = require('./config/db');
+const { pass } = require('./config/emails');
 require('./models/Users');
 db.sync()
     .then(() => {
@@ -40,6 +42,9 @@ app.use(
         saveUninitialized: false,
     })
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Template Engine
 app.use(expressLayouts);

@@ -15,8 +15,6 @@ let transport = nodemailer.createTransport({
 });
 
 exports.send = async (options) => {
-    console.log(options);
-
     //Read template
     const file = __dirname + `/../views/emails/${options.file}.ejs`;
     // const file = path.join(__dirname, '../views/emails', `${options.file}.ejs`);

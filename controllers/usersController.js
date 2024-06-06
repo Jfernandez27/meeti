@@ -15,9 +15,8 @@ exports.addUser = async (req, res) => {
         req.body.password
     );
 
-    // Leer los errores de express
+    // Read express Errors
     const errorsExpress = req.validationErrors();
-    console.log(`errorsExpress: ${errorsExpress}`);
 
     const transaction = await db.transaction();
 
@@ -48,24 +47,48 @@ exports.addUser = async (req, res) => {
         );
         res.redirect('/login');
     } catch (error) {
-        console.log('Entra al catch');
-        console.log(error);
         if (!transaction.finished) {
             await transaction.rollback();
         }
-        // extraer el message de los errores
+
         const errorsSequelize = error.errors
             ? error.errors.map((err) => err.message)
             : [];
 
-        // extraer unicamente el msg de los errores
         const errExp = errorsExpress ? errorsExpress.map((err) => err.msg) : [];
 
-        //unirlos
         const errorsList = [...errorsSequelize, ...errExp];
         if (errorsList.length > 0) {
             req.flash('error', errorsList);
         }
         res.redirect('/signin');
     }
+};
+
+exports.confirm = async (req, res, next) => {
+    //Verify User Exist
+    const user = await Users.findOne({
+        where: {
+            email: req.params.email,
+        },
+    });
+
+    //Not User, Redirect
+    if (!user) {
+        req.flash('error', 'The user does not exist');
+        res.redirect('/signin');
+        return next();
+    }
+
+    //Confirm user, Redirect
+    try {
+        user.active = 1;
+        await user.save();
+        req.flash('exito', 'User confirmed, you can log in');
+    } catch (error) {
+        console.log(`Error activating user: ${error} `);
+        req.flash('error', 'Error activating user');
+    }
+    res.redirect('/login');
+    return next();
 };
