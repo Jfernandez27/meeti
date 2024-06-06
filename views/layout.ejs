@@ -22,6 +22,17 @@
         </nav>
     </header>
 
+    <% if (locals.messages) { %>
+        <% const category = Object.keys(locals.messages) %>
+        <% if (category.length){ %>
+            <% locals.messages[category].forEach(alert =>{ %>
+                <div class="alertas">
+                    <p class="alerta <%= category %>"><%= alert %></p>
+                </div>
+            <% }) %>
+        <% } %>
+    <% } %>
+
     <%- body %>
 
     <footer class="site-footer contenedor">

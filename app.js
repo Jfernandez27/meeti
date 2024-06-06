@@ -1,11 +1,15 @@
 require('dotenv').config({ path: '.env' });
-const db = require('./config/db');
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
-const Sequelize = require('sequelize');
 const path = require('path');
+const bodyParser = require('body-parser');
+const flash = require('connect-flash');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const expressValidator = require('express-validator');
 const router = require('./routes/routes');
 
+const db = require('./config/db');
 require('./models/Users');
 db.sync()
     .then(() => {
@@ -16,6 +20,29 @@ db.sync()
     });
 
 const app = express();
+
+//Enable reading data from forms
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Enable express Validator
+app.use(expressValidator());
+
+//Enable Cookie Parser
+app.use(cookieParser());
+
+//Session
+app.use(
+    session({
+        secret: process.env.SECRET,
+        key: process.env.KEY,
+        resave: false,
+        saveUninitialized: false,
+    })
+);
+
+//Flash Messages
+app.use(flash());
 
 // Template Engine
 app.use(expressLayouts);
@@ -29,6 +56,7 @@ app.use(express.static('public'));
 
 //Middlewares
 app.use((req, res, next) => {
+    res.locals.messages = req.flash();
     const date = new Date();
     res.locals.year = date.getFullYear();
     next();
