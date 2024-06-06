@@ -1,4 +1,6 @@
 const Users = require('../models/Users');
+const db = require('../config/db');
+const emails = require('../handlers/emails');
 
 exports.signin = (req, res) => {
     res.render('signin', {
@@ -15,28 +17,42 @@ exports.addUser = async (req, res) => {
 
     // Leer los errores de express
     const errorsExpress = req.validationErrors();
+    console.log(`errorsExpress: ${errorsExpress}`);
+
+    const transaction = await db.transaction();
 
     try {
-        if (errorsExpress.length > 0) {
-            throw new Error(e);
+        if (errorsExpress) {
+            throw new Error('ValidationError');
         }
-        await Users.create(user);
 
-        // // Url de confirmación
-        // const url = `http://${req.headers.host}/confirm/${user.email}`;
+        await Users.create(user, { transaction });
 
-        // // Enviar email de confirmación
-        // await enviarEmail.enviarEmail({
-        //     user,
-        //     url,
-        //     subject: 'Confirma tu cuenta de Meeti',
-        //     archivo: 'confirmar-cuenta',
-        // });
+        await transaction.commit();
 
-        //Flash Message y redireccionar
-        // req.flash('exito', 'Hemos enviado un E-mail, confirma tu cuenta');
+        // confirm Url
+        const url = `http://${req.headers.host}/confirm/${user.email}`;
+
+        // Send email
+        await emails.send({
+            user,
+            url,
+            subject: 'Confirm your Meeti account',
+            file: 'confirm',
+        });
+
+        // Flash Message
+        req.flash(
+            'exito',
+            'We have sent you an email, please confirm your account'
+        );
         res.redirect('/login');
     } catch (error) {
+        console.log('Entra al catch');
+        console.log(error);
+        if (!transaction.finished) {
+            await transaction.rollback();
+        }
         // extraer el message de los errores
         const errorsSequelize = error.errors
             ? error.errors.map((err) => err.message)
@@ -47,8 +63,9 @@ exports.addUser = async (req, res) => {
 
         //unirlos
         const errorsList = [...errorsSequelize, ...errExp];
-
-        req.flash('error', errorsList);
+        if (errorsList.length > 0) {
+            req.flash('error', errorsList);
+        }
         res.redirect('/signin');
     }
 };

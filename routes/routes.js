@@ -11,6 +11,7 @@ module.exports = function () {
     router.post('/signin', usersController.addUser);
 
     router.get('/login', authController.login);
+    router.post('/login', authController.validateLogin);
 
     return router;
 };

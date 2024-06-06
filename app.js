@@ -41,9 +41,6 @@ app.use(
     })
 );
 
-//Flash Messages
-app.use(flash());
-
 // Template Engine
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
@@ -53,6 +50,9 @@ app.set('views', path.join(__dirname, './views'));
 
 // Static Files
 app.use(express.static('public'));
+
+//Flash Messages
+app.use(flash());
 
 //Middlewares
 app.use((req, res, next) => {
