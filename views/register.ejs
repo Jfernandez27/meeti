@@ -1,1 +1,26 @@
-<h1>Register</h1>
+<main class="contenedor contenedor-formularios">
+    <h1><%= headLine %></h1>
+    <form action="/signin" method="POST" class="default-form">
+        <div class="campo">
+            <label for="email">Email</label>
+            <input type="email" name="email" placeholder="Your Email">
+        </div>
+        <div class="campo">
+            <label for="name">Name</label>
+            <input type="text" name="name" placeholder="Your Name">
+        </div>
+        <div class="campo">
+            <label for="password">Password</label>
+            <input type="password" name="password" placeholder="Your password">
+        </div>
+        <div class="campo">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" name="confirmPassword" placeholder="Confirm your password">
+        </div>
+        <div class="campo enviar">
+            <input type="submit" value="Sign in" class="btn btn-rosa">
+        </div>
+    </form>
+
+</main>
+

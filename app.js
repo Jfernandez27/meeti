@@ -1,9 +1,19 @@
+require('dotenv').config({ path: '.env' });
+const db = require('./config/db');
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
+const Sequelize = require('sequelize');
 const path = require('path');
 const router = require('./routes/routes');
 
-require('dotenv').config({ path: '.env' });
+require('./models/Users');
+db.sync()
+    .then(() => {
+        console.log('DB Connected...');
+    })
+    .catch((error) => {
+        console.log(`Error: ${error}`);
+    });
 
 const app = express();
 
