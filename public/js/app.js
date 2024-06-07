@@ -1,16 +1,46 @@
 // import
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 
-const lat = -33.4379202401447;
-const lng = -70.65038985314246;
+const lat = document.querySelector('#lat').value || -33.4379202401447;
+const lng = document.querySelector('#lng').value || -70.65038985314246;
+const add = document.querySelector('#address').value || '';
 
 const map = L.map('map').setView([lat, lng], 13);
 
 let markers = new L.FeatureGroup().addTo(map);
 let marker;
 
-// Utilizar el provider y GeoCoder
+// Provider & GeoCoder
 const geocodeService = L.esri.Geocoding.geocodeService();
+
+if (lat && lng) {
+    // add marker
+    marker = new L.marker([lat, lng], {
+        draggable: true,
+        autoPan: true,
+    })
+        .addTo(map)
+        .bindPopup(add)
+        .openPopup();
+
+    markers.addLayer(marker);
+
+    // Detect marker move
+    marker.on('moveend', function (e) {
+        marker = e.target;
+        const position = marker.getLatLng();
+        map.panTo(new L.LatLng(position.lat, position.lng));
+
+        geocodeService
+            .reverse()
+            .latlng(position, 15)
+            .run(function (error, result) {
+                fillInputs(result);
+
+                marker.bindPopup(result.address.LongLabel);
+            });
+    });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

@@ -91,15 +91,25 @@ module.exports = function () {
         meetisController.add
     );
     router.get(
-        '/meeti/edit',
+        '/meeti/edit/:id',
         authController.authenticatedUser,
         meetisController.edit
     );
     router.post(
-        '/meeti/edit',
+        '/meeti/edit/:id',
         authController.authenticatedUser,
         meetisController.sanitizeMeeti,
         meetisController.update
+    );
+    router.get(
+        '/meeti/delete/:id',
+        authController.authenticatedUser,
+        meetisController.delete
+    );
+    router.post(
+        '/meeti/delete/:id',
+        authController.authenticatedUser,
+        meetisController.remove
     );
 
     return router;
