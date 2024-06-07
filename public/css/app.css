@@ -557,6 +557,18 @@ trix-toolbar .trix-button--icon-strike {
     }
 }
 
+.contenedor-input {
+    display:flex;
+    flex-direction: column;
+    flex: 1;
+}
+.contenedor-input small {
+    margin: 1rem 0 2rem 0; 
+    font-weight: bold;
+    color: #0F4C5C;
+    font-size: 1rem;
+}
+
 /** Asistentes **/
 .asistentes .titulo {
     display: flex;
@@ -626,4 +638,12 @@ aside .ubicacion {
 }
 aside img {
     display: block;
+}
+
+.campo.mapa {
+    display: block;
+}
+#map {
+    height: 600px;
+    width: 100%;
 }

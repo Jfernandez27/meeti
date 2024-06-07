@@ -5,6 +5,7 @@ const homeController = require('../controllers/homeController');
 const adminController = require('../controllers/adminController');
 const usersController = require('../controllers/usersController');
 const groupsController = require('../controllers/groupsController');
+const meetiesController = require('../controllers/meetisController');
 
 module.exports = function () {
     router.get('/', homeController.home);
@@ -78,9 +79,16 @@ module.exports = function () {
     });
 
     //Meetis
-    router.get('/meeti/new', (req, res, next) => {
-        res.send('New Meeti');
-    });
+    router.get(
+        '/meeti/new',
+        authController.authenticatedUser,
+        meetiesController.new
+    );
+    router.post(
+        '/meeti/new',
+        authController.authenticatedUser,
+        meetiesController.add
+    );
 
     return router;
 };
