@@ -10,7 +10,7 @@ let markers = new L.FeatureGroup().addTo(map);
 let marker;
 
 // Utilizar el provider y GeoCoder
-// const geocodeService = L.esri.Geocoding.geocode();
+const geocodeService = L.esri.Geocoding.geocodeService();
 
 document.addEventListener('DOMContentLoaded', () => {
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -28,43 +28,51 @@ function searchAddress(e) {
 
         const provider = new OpenStreetMapProvider();
         provider.search({ query: e.target.value }).then((resultSearch) => {
-            fillInputs(resultSearch);
+            geocodeService
+                .reverse()
+                .latlng(resultSearch[0].bounds[0], 15)
+                .run(function (error, result) {
+                    fillInputs(result);
 
-            map.setView(resultSearch[0].bounds[0], 15);
+                    map.setView(resultSearch[0].bounds[0], 15);
 
-            // add marker
-            marker = new L.marker(resultSearch[0].bounds[0], {
-                draggable: true,
-                autoPan: true,
-            })
-                .addTo(map)
-                .bindPopup(resultSearch[0].label)
-                .openPopup();
+                    // add marker
+                    marker = new L.marker(resultSearch[0].bounds[0], {
+                        draggable: true,
+                        autoPan: true,
+                    })
+                        .addTo(map)
+                        .bindPopup(resultSearch[0].label)
+                        .openPopup();
 
-            markers.addLayer(marker);
+                    markers.addLayer(marker);
 
-            // Detect marker move
-            marker.on('moveend', function (e) {
-                marker = e.target;
-                const position = marker.getLatLng();
-                map.panTo(new L.LatLng(position.lat, position.lng));
+                    // Detect marker move
+                    marker.on('moveend', function (e) {
+                        marker = e.target;
+                        const position = marker.getLatLng();
+                        map.panTo(new L.LatLng(position.lat, position.lng));
 
-                //         fillInputs(result);
-                //         // asigna los valores al popup del marker
-                //         marker.bindPopup(result.address.LongLabel);
-                //
-            });
+                        geocodeService
+                            .reverse()
+                            .latlng(position, 15)
+                            .run(function (error, result) {
+                                fillInputs(result);
+
+                                marker.bindPopup(result.address.LongLabel);
+                            });
+                    });
+                });
         });
     }
 }
 function fillInputs(result) {
-    console.log(result);
-    // document.querySelector('#address').value = result.address.Address || '';
-    // document.querySelector('#city').value = result.address.City || '';
-    // document.querySelector('#state').value = result.address.Region || '';
-    // document.querySelector('#country').value = result.address.CountryCode || '';
-    // document.querySelector('#lat').value = result.latlng.lat || '';
-    // document.querySelector('#lng').value = result.latlng.lng || '';
+    document.querySelector('#address').value = result.address.Address || '';
+    document.querySelector('#city').value = result.address.City || '';
+    document.querySelector('#state').value = result.address.Region || '';
+    document.querySelector('#country').value = result.address.CountryCode || '';
+    document.querySelector('#lat').value = result.latlng.lat || '';
+    document.querySelector('#lng').value = result.latlng.lng || '';
 }
 // // setup
 // const provider = new OpenStreetMapProvider();
