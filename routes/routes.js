@@ -34,7 +34,39 @@ module.exports = function () {
     router.post(
         '/group/new',
         authController.authenticatedUser,
+        groupsController.uploadImage,
         groupsController.create
+    );
+    router.get(
+        '/group/edit/:id',
+        authController.authenticatedUser,
+        groupsController.edit
+    );
+    router.post(
+        '/group/edit/:id',
+        authController.authenticatedUser,
+        groupsController.update
+    );
+    router.get(
+        '/group/image/:id',
+        authController.authenticatedUser,
+        groupsController.editImage
+    );
+    router.post(
+        '/group/image/:id',
+        authController.authenticatedUser,
+        groupsController.uploadImage,
+        groupsController.updateImage
+    );
+    router.get(
+        '/group/delete/:id',
+        authController.authenticatedUser,
+        groupsController.delete
+    );
+    router.post(
+        '/group/delete/:id',
+        authController.authenticatedUser,
+        groupsController.remove
     );
 
     //Profile

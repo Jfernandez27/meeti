@@ -2,16 +2,16 @@
 
     <h1><%= headLine %></h1>
 
-    <form action="/group/new" method="POST" class="default-form" enctype="multipart/form-data">
+    <form  method="POST" class="default-form" >
         <div class="campo">
             <label for="name">Name</label>
-            <input type="text" name="name" placeholder="Group Name">
+            <input type="text" value="<%= group.name %>" name="name" placeholder="Group Name">
         </div>
 
         <div class="campo descripcion">
             <label for="description">Description</label>
             <div class="contenedor-editor">
-                <input type="hidden" name="description"  id="x" >
+                <input type="hidden" value="<%= group.description %>" name="description"  id="x" >
                 <trix-editor input="x"></trix-editor>
             </div>
         </div>
@@ -21,23 +21,18 @@
             <select name="category" >
                 <option value="" selected disabled> -- Choose a Category --</option>
                 <% categories.forEach(category => { %>
-                    <option value="<%= category.id %>"><%= category.name %></option>
+                    <option value="<%= category.id %>" <%= (group.categoryId === category.id ) ? 'selected' : '' %> ><%= category.name %></option>
                 <% }); %>
             </select>
         </div>
 
         <div class="campo">
-            <label for="image">Image</label>
-            <input type="file" name="image">
-        </div>
-
-        <div class="campo">
             <label for="url">Website</label>
-            <input type="url" name="url" placeholder="Website">
+            <input type="url" value="<%= group.url %>" name="url" placeholder="Website">
         </div>
 
         <div class="campo enviar">
-            <input type="submit" value="Create Group" class="btn btn-rosa">
+            <input type="submit" value="Update Group" class="btn btn-rosa">
         </div>
 
     </form>

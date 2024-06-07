@@ -40,38 +40,25 @@
 
     <div class="seccion-admin">
         <h2>My Groups</h2>
-        <ul>
-            <li>
-                <div class="informacion-admin">
-                    <h3>Node Santiago</h3>
-                </div>
-                <div class="acciones contenedor-botones">
-                    <a href="#" class="btn btn-verde">Edit</a>
-                    <a href="#" class="btn btn-azul2">Image</a>
-                    <a href="#" class="btn btn-rojo">Delete</a>
-                </div>
-            </li>
-            <li>
-                <div class="informacion-admin">
-                    <h3>AWS Santiago</h3>
-                </div>
-                <div class="acciones contenedor-botones">
-                    <a href="#" class="btn btn-verde">Edit</a>
-                    <a href="#" class="btn btn-azul2">Image</a>
-                    <a href="#" class="btn btn-rojo">Delete</a>
-                </div>
-            </li>
-            <li>
-                <div class="informacion-admin">
-                    <h3>Focus Project</h3>
-                </div>
-                <div class="acciones contenedor-botones">
-                    <a href="#" class="btn btn-verde">Edit</a>
-                    <a href="#" class="btn btn-azul2">Image</a>
-                    <a href="#" class="btn btn-rojo">Delete</a>
-                </div>
-            </li>
-        </ul>
+
+        <% if(groups.length){ %>
+            <ul>
+                <% groups.forEach(group => { %>
+                    <li>
+                        <div class="informacion-admin">
+                            <h3><%= group.name %></h3>
+                        </div>
+                        <div class="acciones contenedor-botones">
+                            <a href="/group/edit/<%= group.id %>" class="btn btn-verde">Edit</a>
+                            <a href="/group/image/<%= group.id %>" class="btn btn-azul2">Image</a>
+                            <a href="/group/delete/<%= group.id %>" class="btn btn-rojo">Delete</a>
+                        </div>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p>You do not manage any groups</p>
+        <% } %>
     </div>
 
 </main>
