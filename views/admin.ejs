@@ -9,36 +9,33 @@
     </div>
 
     <div class="seccion-admin">
-        <h2>My Meeti's</h2>
-        <ul>
-            <li>
-                <div class="informacion-admin">
-                    <p class="fecha">Monday, June 17, 2024</p>
-                    <h3>E-Commerce Santiago Summit</h3>
-                    <small>23 participants</small>
-                </div>
-                <div class="acciones contenedor-botones">
-                    <a href="#" class="btn btn-verde">Edit</a>
-                    <a href="#" class="btn btn-azul2">Participants</a>
-                    <a href="#" class="btn btn-rojo">Delete</a>
-                </div>
-            </li>
-            <li>
-                <div class="informacion-admin">
-                    <p class="fecha">Monday, June 24, 2024</p>
-                    <h3>National e-sports tournament</h3>
-                    <small>597 participants</small>
-                </div>
-                <div class="acciones contenedor-botones">
-                    <a href="#" class="btn btn-verde">Edit</a>
-                    <a href="#" class="btn btn-azul2">Participants</a>
-                    <a href="#" class="btn btn-rojo">Delete</a>
-                </div>
-            </li>
-        </ul>
+
+        <h2>Next Meeti's</h2>
+        <% if(meeties.length){ %>
+            <ul>
+                <% meeties.forEach(meeti => { %>
+                    <li>
+                        <div class="informacion-admin">
+                            <% const fullDate = meeti.date + ' ' + meeti.time; %>
+                            <p class="fecha"><%= moment(fullDate).format('LLLL') %></p>
+                            <h3><%= meeti.title %></h3>
+                            <small><%= meeti.interested.length %> participants</small>
+                        </div>
+                        <div class="acciones contenedor-botones">
+                            <a href="/meeti/edit/<%= meeti.id %>" class="btn btn-verde">Edit</a>
+                            <a href="/meeti/participants/<%= meeti.id %>" class="btn btn-azul2">Participants</a>
+                            <a href="/meeti/delete/<%= meeti.id %>" class="btn btn-rojo">Delete</a>
+                        </div>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p>you don't have any meeti</p>
+        <% } %>
     </div>
 
     <div class="seccion-admin">
+
         <h2>My Groups</h2>
 
         <% if(groups.length){ %>
@@ -58,6 +55,32 @@
             </ul>
         <% } else { %>
             <p>You do not manage any groups</p>
+        <% } %>
+    </div>
+
+    <div class="seccion-admin">
+
+        <h2>Past Meeti's</h2>
+        <% if(pastMeeties.length){ %>
+            <ul>
+                <% pastMeeties.forEach(meeti => { %>
+                    <li>
+                        <div class="informacion-admin">
+                            <% const fullDate = meeti.date + ' ' + meeti.time; %>
+                            <p class="fecha"><%= moment(fullDate).format('LLLL') %></p>
+                            <h3><%= meeti.title %></h3>
+                            <small><%= meeti.interested.length %> participants</small>
+                        </div>
+                        <div class="acciones contenedor-botones">
+                            <a href="/meeti/edit/<%= meeti.id %>" class="btn btn-verde">Edit</a>
+                            <a href="/meeti/participants/<%= meeti.id %>" class="btn btn-azul2">Participants</a>
+                            <a href="/meeti/delete/<%= meeti.id %>" class="btn btn-rojo">Delete</a>
+                        </div>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p>you don't have any past meeti</p>
         <% } %>
     </div>
 
