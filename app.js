@@ -11,8 +11,11 @@ const passport = require('./config/passport');
 const router = require('./routes/routes');
 
 const db = require('./config/db');
-const { pass } = require('./config/emails');
+
 require('./models/Users');
+require('./models/Categories');
+require('./models/Groups');
+
 db.sync()
     .then(() => {
         console.log('DB Connected...');

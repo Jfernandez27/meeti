@@ -4,6 +4,7 @@ const authController = require('../controllers/authController');
 const homeController = require('../controllers/homeController');
 const adminController = require('../controllers/adminController');
 const usersController = require('../controllers/usersController');
+const groupsController = require('../controllers/groupsController');
 
 module.exports = function () {
     router.get('/', homeController.home);
@@ -18,7 +19,23 @@ module.exports = function () {
     router.post('/login', authController.authenticateUser);
 
     //Admin Panel
-    router.get('/admin', adminController.admin);
+    router.get(
+        '/admin',
+        authController.authenticatedUser,
+        adminController.admin
+    );
+
+    //Groups
+    router.get(
+        '/group/new',
+        authController.authenticatedUser,
+        groupsController.new
+    );
+    router.post(
+        '/group/new',
+        authController.authenticatedUser,
+        groupsController.create
+    );
 
     //Profile
     router.get('/profile/edit', (req, res, next) => {
@@ -26,11 +43,6 @@ module.exports = function () {
     });
     router.get('/profile/image', (req, res, next) => {
         res.send('Profile Image');
-    });
-
-    //Groups
-    router.get('/group/new', (req, res, next) => {
-        res.send('New Group');
     });
 
     //Meetis
