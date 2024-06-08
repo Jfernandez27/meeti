@@ -92,3 +92,97 @@ exports.confirm = async (req, res, next) => {
     res.redirect('/login');
     return next();
 };
+
+exports.edit = async (req, res, next) => {
+    const user = await Users.findByPk(req.user.id);
+    if (!user) {
+        req.flash('error', 'Invalid Operation');
+        res.redirect('/admin');
+        return next();
+    }
+    res.render('profiles/edit', {
+        headLine: 'Edit Profile',
+        user,
+    });
+};
+
+exports.update = async (req, res, next) => {
+    const user = await Users.findByPk(req.user.id);
+    if (!user) {
+        req.flash('error', 'Invalid Operation');
+        res.redirect('/admin');
+        return next();
+    }
+
+    //Sanitize
+    req.sanitizeBody('name');
+    req.sanitizeBody('email');
+
+    const { name, bio, email } = req.body;
+
+    user.name = name;
+    user.bio = bio;
+    user.email = email;
+
+    try {
+        await user.save();
+        req.flash('exito', 'The profile has been updated successfully');
+        res.redirect('/admin');
+    } catch (error) {
+        console.log(error);
+        const errors = error.errors.map((err) => err.message);
+        req.flash('error', errors);
+        res.redirect('/profile/edit');
+    }
+};
+
+exports.password = (req, res, next) => {
+    res.render('auth/password', { headLine: 'Password change' });
+};
+exports.passwordUpdate = async (req, res, next) => {
+    const user = await Users.findByPk(req.user.id);
+
+    if (!user) {
+        req.flash('error', 'Invalid Operation');
+        res.redirect('/user/password');
+        return next();
+    }
+    if (!user.validatePassword(req.body.current)) {
+        req.flash('error', "Current password didn't match");
+        res.redirect('/user/password');
+        return next();
+    }
+
+    req.checkBody('confirm', 'Confirm Password is required').notEmpty();
+    req.checkBody('confirm', "Password didn't match").equals(req.body.password);
+
+    // Read express Errors
+    const errorsExpress = req.validationErrors();
+
+    if (errorsExpress) {
+        console.log(errorsExpress);
+        req.flash(
+            'error',
+            errorsExpress.map((error) => error.msg)
+        );
+
+        res.redirect('/user/password');
+        return next();
+    }
+
+    const hash = user.passwordHash(req.body.password);
+
+    user.password = hash;
+
+    try {
+        await user.save();
+        req.logout(function (err) {});
+        req.flash('exito', 'The password has been updated successfully');
+        res.redirect('/login');
+    } catch (error) {
+        console.log(error);
+        const errors = error.errors.map((err) => err.message);
+        req.flash('error', errors);
+        res.redirect('/user/password');
+    }
+};

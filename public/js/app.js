@@ -52,6 +52,15 @@ document.addEventListener('DOMContentLoaded', () => {
     search.addEventListener('input', searchAddress);
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    //Clean Alerts
+    let alerts = document.querySelector('.alertas');
+    if (alerts) {
+        console.log('Si hay');
+        cleanAlerts();
+    }
+});
+
 function searchAddress(e) {
     if (e.target.value.length > 8) {
         markers.clearLayers();
@@ -109,4 +118,14 @@ function fillInputs(result) {
 
 // // search
 // const results = await provider.search({ query: input.value });
-9;
+function cleanAlerts() {
+    const alerts = document.querySelector('.alertas');
+    const interval = setInterval(() => {
+        if (alerts.children.length > 0) {
+            alerts.removeChild(alerts.children[0]);
+        } else if (alerts.children.length === 0) {
+            alerts.parentElement.removeChild(alerts);
+            clearInterval(interval);
+        }
+    }, 2000);
+}

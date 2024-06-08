@@ -366,6 +366,10 @@ main.contenedor-formularios {
     justify-content: flex-end;
     padding-top: 2rem;
 }
+.campo.enviar2 {
+    justify-content: space-around;
+    padding-top: 2rem;
+}
 .default-form .campo label {
     flex: 0 0 120px;
 }

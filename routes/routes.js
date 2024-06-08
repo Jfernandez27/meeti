@@ -70,14 +70,6 @@ module.exports = function () {
         groupsController.remove
     );
 
-    //Profile
-    router.get('/profile/edit', (req, res, next) => {
-        res.send('Profile edit');
-    });
-    router.get('/profile/image', (req, res, next) => {
-        res.send('Profile Image');
-    });
-
     //Meetis
     router.get(
         '/meeti/new',
@@ -111,6 +103,31 @@ module.exports = function () {
         authController.authenticatedUser,
         meetisController.remove
     );
+
+    //Profile
+    router.get(
+        '/profile/edit',
+        authController.authenticatedUser,
+        usersController.edit
+    );
+    router.post(
+        '/profile/edit',
+        authController.authenticatedUser,
+        usersController.update
+    );
+    router.get(
+        '/user/password',
+        authController.authenticatedUser,
+        usersController.password
+    );
+    router.post(
+        '/user/password',
+        authController.authenticatedUser,
+        usersController.passwordUpdate
+    );
+    router.get('/profile/image', (req, res, next) => {
+        res.send('Profile Image');
+    });
 
     return router;
 };

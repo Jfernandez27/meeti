@@ -11,6 +11,7 @@ const Users = db.define(
             autoIncrement: true,
         },
         name: Sequelize.DataTypes.STRING(100),
+        bio: Sequelize.DataTypes.TEXT,
         image: Sequelize.DataTypes.STRING(100),
         email: {
             type: Sequelize.DataTypes.STRING(100),
@@ -40,11 +41,7 @@ const Users = db.define(
     {
         hooks: {
             beforeCreate(user) {
-                user.password = bcrypt.hashSync(
-                    user.password,
-                    bcrypt.genSaltSync(10),
-                    null
-                );
+                user.password = Users.prototype.passwordHash(user.password);
             },
         },
     }
@@ -54,5 +51,7 @@ const Users = db.define(
 Users.prototype.validatePassword = function (password) {
     return bcrypt.compareSync(password, this.password);
 };
-
+Users.prototype.passwordHash = function (password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
+};
 module.exports = Users;
