@@ -19,6 +19,15 @@ module.exports = function () {
     router.get('/login', authController.login);
     router.post('/login', authController.authenticateUser);
 
+    // Login
+    router.get(
+        '/logout',
+        authController.authenticateUser,
+        authController.logout
+    );
+
+    /*PRIVATE AREA */
+
     //Admin Panel
     router.get(
         '/admin',

@@ -19,3 +19,9 @@ exports.authenticatedUser = (req, res, next) => {
 
     return res.redirect('/login');
 };
+
+exports.logout = (req, res, next) => {
+    req.logout(function (err) {});
+    res.redirect('/login');
+    next();
+};
