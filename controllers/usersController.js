@@ -1,6 +1,51 @@
 const Users = require('../models/Users');
 const db = require('../config/db');
 const emails = require('../handlers/emails');
+const multer = require('multer');
+const shortid = require('shortid');
+const fs = require('fs');
+
+const multerConfig = {
+    limits: { fileSize: 1024 * 1024 * 5 }, // Limit file size at 5MB
+    storage: (fileStorage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, __dirname + '/../public/uploads/profiles/');
+        },
+        filename: (req, file, cb) => {
+            const extension = file.mimetype.split('/')[1];
+            cb(null, `${shortid.generate()}.${extension}`);
+        },
+    })),
+    fileFilter(req, file, cb) {
+        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+            cb(null, true);
+        } else {
+            cb(new Error('The file format is not valid'), false);
+        }
+    },
+};
+
+const upload = multer(multerConfig).single('image');
+
+exports.uploadImage = async (req, res, next) => {
+    upload(req, res, function (error) {
+        if (error) {
+            if (error instanceof multer.MulterError) {
+                if (error.code === 'LIMIT_FILE_SIZE') {
+                    req.flash('error', 'File size exceeds allowed');
+                } else {
+                    req.flash('error', error.message);
+                }
+            } else if (error.hasOwnProperty('message')) {
+                req.flash('error', error.message);
+            }
+            res.redirect('back');
+            return;
+        } else {
+            next();
+        }
+    });
+};
 
 exports.signin = (req, res) => {
     res.render('signin', {
@@ -185,4 +230,58 @@ exports.passwordUpdate = async (req, res, next) => {
         req.flash('error', errors);
         res.redirect('/user/password');
     }
+};
+exports.profileImage = async (req, res, next) => {
+    const user = await Users.findByPk(req.user.id);
+
+    if (!user) {
+        req.flash('error', 'Invalid Operation');
+        res.redirect('/user/password');
+        return next();
+    }
+
+    res.render('profiles/image', { headLine: 'Update Profile image', user });
+};
+exports.saveProfileImage = async (req, res, next) => {
+    const user = await Users.findByPk(req.user.id);
+    if (!user) {
+        req.flash('error', 'Invalid Operation');
+        res.redirect('/admin');
+        return next();
+    }
+
+    if (req.file && user.image) {
+        const previousImagePath =
+            __dirname + `/../public/uploads/profiles/${user.image}`;
+
+        fs.unlink(previousImagePath, (error) => {
+            if (error) {
+                console.log(error);
+                if (error.hasOwnProperty('message')) {
+                    req.flash('error', error.message);
+                } else {
+                    req.flash('error', 'Could not delete previous image');
+                }
+                res.redirect('/admin');
+            }
+            return;
+        });
+    }
+
+    if (req.file) {
+        user.image = req.file.filename;
+    }
+
+    try {
+        await user.save();
+        req.flash('exito', 'User image updated sucessfully');
+    } catch (error) {
+        console.log(error);
+        if (error.hasOwnProperty('message')) {
+            req.flash('error', error.message);
+        } else {
+            req.flash('error', 'Could not update Group image');
+        }
+    }
+    res.redirect('/admin');
 };

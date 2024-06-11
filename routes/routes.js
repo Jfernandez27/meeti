@@ -125,9 +125,17 @@ module.exports = function () {
         authController.authenticatedUser,
         usersController.passwordUpdate
     );
-    router.get('/profile/image', (req, res, next) => {
-        res.send('Profile Image');
-    });
+    router.get(
+        '/profile/image',
+        authController.authenticatedUser,
+        usersController.profileImage
+    );
+    router.post(
+        '/profile/image',
+        authController.authenticatedUser,
+        usersController.uploadImage,
+        usersController.saveProfileImage
+    );
 
     return router;
 };

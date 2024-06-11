@@ -1,0 +1,25 @@
+<main class="contenedor contenedor-formularios">
+
+    <h1><%= headLine %></h1>
+
+    <form action="/profile/image" method="POST" class="default-form" enctype="multipart/form-data">
+        <legend>Upload your photo for your user profile</legend>
+        <div class="campo">
+            <label for="">Current image</label>
+                <% if (user.image) { %>
+                    <img src="/uploads/profiles/<%= user.image %>" alt="<%= user.name %>" width="200">
+                <% } else { %>
+                    <p>The User has no images</p>
+                <% } %>
+            </div>
+        <div class="campo">
+            <label for="image">Image</label>
+            <input type="file" name="image">
+        </div>
+
+        <div class="campo enviar">
+            <input type="submit" value="Update Image" class="btn btn-rosa">
+        </div>
+
+    </form>
+</main>
