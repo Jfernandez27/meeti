@@ -19,6 +19,7 @@ exports.admin = async (req, res, next) => {
                 userId: req.user.id,
                 date: { [Op.gte]: moment(new Date()).format('YYYY-MM-DD') },
             },
+            order: [['date', 'ASC']],
         })
     );
     querys.push(

@@ -15,7 +15,6 @@ const Meeti = db.define(
             type: Sequelize.UUID,
             primaryKey: true,
             allowNull: false,
-            defaultValue: uuid(),
         },
         title: {
             type: Sequelize.STRING,
@@ -108,7 +107,7 @@ const Meeti = db.define(
     {
         hooks: {
             async beforeCreate(meeti) {
-                const url = slug(meeti.title).toLowerCase;
+                const url = slug(meeti.title).toLowerCase();
                 meeti.slug = `${url}-${shortId.generate()}`;
             },
         },

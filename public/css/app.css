@@ -161,15 +161,28 @@ p {
     margin-left: 2rem;
 }
 
-.info-autor .imagen {
+.info-autor .imagen,
+.listado-asistentes .imagen {
     border-radius: 50%;
     background-color: #e1e1e1;
-    height: 50px;
-    width: 50px;
+    height: 70px;
+    width: 70px;
+    overflow: hidden;
+}
+.info-autor .imagen img,
+.listado-asistentes .imagen img {
+    max-width: unset;
+    width: 80px!important;
 }
 .info-autor .autor {
     font-weight: 700;
     margin-top: .5rem;
+}
+.info-autor .autor p {
+    color: #333;
+}
+.info-autor .autor a {
+    color: #0F4C5C;
 }
 .info-autor p {
     margin: 0;
@@ -416,6 +429,7 @@ trix-editor h1 {
     align-self: flex-start;
     padding-top: 4rem;
 }
+
 trix-toolbar, 
 trix-editor {
     background-color: white!important;
@@ -523,17 +537,35 @@ trix-toolbar .trix-button--icon-strike {
     text-align: left;
     font-size: 2rem;
 }
+
+.descripcion img {
+    width: 100%;
+    margin-bottom: 3rem;
+}
+.descripcion div {
+    line-height: 2;
+}
+
 /** Asistencia **/
 .pregunta-asistencia {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
+@media (min-width: 768px) {
+    .pregunta-asistencia {
+        flex-basis: 400px;
+    }
+}
 .pregunta-asistencia p {
     font-size: 2rem;
     font-weight: 700;
     margin: 0;
     text-align: center;
+}
+.pregunta-asistencia form, 
+.pregunta-asistencia input[type="submit"] {
+   width: 100%;
 }
 .opciones-asistencia {
     display: flex;
@@ -611,6 +643,7 @@ trix-toolbar .trix-button--icon-strike {
 }
 .comentario .texto {
     padding: 2rem;
+    flex: 1;
     border: 1px solid #C7C7C7;
     background-color: white;
 }
@@ -652,4 +685,10 @@ aside img {
 #map {
     height: 600px;
     width: 100%;
+}
+#location{
+    min-height: 400px;
+}
+.card .imagen-grupo{
+    min-width: -webkit-fill-available;
 }

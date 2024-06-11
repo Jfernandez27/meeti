@@ -7,8 +7,14 @@ const usersController = require('../controllers/usersController');
 const groupsController = require('../controllers/groupsController');
 const meetisController = require('../controllers/meetisController');
 
+const meetisControllerFE = require('../controllers/frontend/meetisControllerFE');
+
 module.exports = function () {
     router.get('/', homeController.home);
+
+    router.get('/meeti/:slug', meetisControllerFE.showMeeti);
+
+    router.post('/rsvp/:slug', meetisControllerFE.rsvp);
 
     // Sign in
     router.get('/signin', usersController.signin);

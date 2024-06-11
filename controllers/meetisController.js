@@ -1,6 +1,7 @@
 const Meeti = require('../models/Meeti');
 const Groups = require('../models/Groups');
 const Categories = require('../models/Categories');
+const { v4: uuid } = require('uuid');
 
 exports.new = async (req, res, next) => {
     const groups = await Groups.findAll({
@@ -36,6 +37,8 @@ exports.add = async (req, res, next) => {
     if (req.body.capacity === '') {
         meeti.capacity = 0;
     }
+
+    meeti.id = uuid();
 
     try {
         const createdMeeti = await Meeti.create(meeti);

@@ -21,7 +21,11 @@ exports.authenticatedUser = (req, res, next) => {
 };
 
 exports.logout = (req, res, next) => {
-    req.logout(function (err) {});
+    req.logout(function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
     res.redirect('/login');
     next();
 };

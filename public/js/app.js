@@ -1,56 +1,62 @@
 // import
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
+import attendance from './attendance';
 
-const lat = document.querySelector('#lat').value || -33.4379202401447;
-const lng = document.querySelector('#lng').value || -70.65038985314246;
-const add = document.querySelector('#address').value || '';
+const lat = getElementValue('#lat', -33.4379202401447);
+const lng = getElementValue('#lng', -70.6500000000001);
+const add = getElementValue('#address', '');
+// const lat = document.querySelector('#lat').value || -33.4379202401447;
+// const lng = document.querySelector('#lng').value || -70.65038985314246;
+// const add = document.querySelector('#address').value || '';
 
-const map = L.map('map').setView([lat, lng], 13);
+var mapElement = document.getElementById('map');
 
-let markers = new L.FeatureGroup().addTo(map);
-let marker;
+if (mapElement) {
+    const map = L.map('map').setView([lat, lng], 13);
 
-// Provider & GeoCoder
-const geocodeService = L.esri.Geocoding.geocodeService();
+    let markers = new L.FeatureGroup().addTo(map);
+    let marker;
+    // Provider & GeoCoder
+    const geocodeService = L.esri.Geocoding.geocodeService();
 
-if (lat && lng) {
-    // add marker
-    marker = new L.marker([lat, lng], {
-        draggable: true,
-        autoPan: true,
-    })
-        .addTo(map)
-        .bindPopup(add)
-        .openPopup();
+    if (lat && lng) {
+        // add marker
+        marker = new L.marker([lat, lng], {
+            draggable: true,
+            autoPan: true,
+        })
+            .addTo(map)
+            .bindPopup(add)
+            .openPopup();
 
-    markers.addLayer(marker);
+        markers.addLayer(marker);
 
-    // Detect marker move
-    marker.on('moveend', function (e) {
-        marker = e.target;
-        const position = marker.getLatLng();
-        map.panTo(new L.LatLng(position.lat, position.lng));
+        // Detect marker move
+        marker.on('moveend', function (e) {
+            marker = e.target;
+            const position = marker.getLatLng();
+            map.panTo(new L.LatLng(position.lat, position.lng));
 
-        geocodeService
-            .reverse()
-            .latlng(position, 15)
-            .run(function (error, result) {
-                fillInputs(result);
+            geocodeService
+                .reverse()
+                .latlng(position, 15)
+                .run(function (error, result) {
+                    fillInputs(result);
 
-                marker.bindPopup(result.address.LongLabel);
-            });
+                    marker.bindPopup(result.address.LongLabel);
+                });
+        });
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(map);
+
+        const search = document.querySelector('#formSearch');
+        search.addEventListener('input', searchAddress);
     });
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map);
-
-    const search = document.querySelector('#formSearch');
-    search.addEventListener('input', searchAddress);
-});
 
 document.addEventListener('DOMContentLoaded', () => {
     //Clean Alerts
@@ -128,4 +134,9 @@ function cleanAlerts() {
             clearInterval(interval);
         }
     }, 2000);
+}
+
+function getElementValue(selector, defaultValue) {
+    var element = document.querySelector(selector);
+    return element ? element.value || defaultValue : defaultValue;
 }
