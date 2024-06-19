@@ -1,0 +1,21 @@
+<main class="contenedor asistentes">
+    <h1><%= headLine %></h1>
+    <% if(attendees.length) { %>
+        <ul class="listado-asistentes">
+            <% attendees.forEach(attendee => { %>
+                <li>
+                    <div class="imagen">
+                        <% if(attendee.image){ %>
+                            <img src="/uploads/profiles/<%= attendee.image %>" alt="">
+                        <% } %>
+                    </div>
+                    <div class="texto">
+                        <%= attendee.name %>
+                    </div>
+                </li>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <p class="no-asistentes">There are no attendees</p>
+    <% } %>
+</main>

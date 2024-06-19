@@ -187,7 +187,39 @@ p {
 .info-autor p {
     margin: 0;
 }
+/** Asistentes **/
+div.asistentes h1,
+.asistentes .no-asistentes {
+    text-align: center;
+}
+.listado-asistentes {
+    padding-bottom: 4rem;
+}
+.listado-asistentes li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding : 2rem;
+    border: 3px solid #EAEAEA;
+    border-bottom: none;
+}
+.listado-asistentes li:last-of-type {
+    border-bottom: 3px solid #EAEAEA;
+}
+@media (min-width: 768px) {
+    .listado-asistentes {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}
+.listado-asistentes .imagen {
+    margin-right: 3rem;
+}
 
+.listado-asistentes .texto {
+    flex: 1;
+    font-size: 2rem;
+}
 
 /** layout**/
 .site-header {
@@ -566,6 +598,11 @@ trix-toolbar .trix-button--icon-strike {
 .pregunta-asistencia form, 
 .pregunta-asistencia input[type="submit"] {
    width: 100%;
+}
+#message {
+    margin-top: 2rem;
+    text-align: center;
+
 }
 .opciones-asistencia {
     display: flex;

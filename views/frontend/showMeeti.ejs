@@ -18,10 +18,18 @@
             </div>
         </div>
         <div class="pregunta-asistencia">
+            <% const exist = meeti.interested.includes(user.id) %>
             <% if (user.id) { %>
                 <form action="/rsvp/<%= meeti.slug %>" id="rsvp">
                     <p>Will you attend?</p>
-                    <input type="submit" value="Yes" class="btn btn-azul">
+                    <% if( exist ) {  %>
+                        <input type="hidden" id="act" value="cancel">
+                        <input type="submit" value="Cancel" class="btn btn-rojo">
+                    <% } else { %>
+                        <input type="hidden" id="act" value="confirm">
+                        <input type="submit" class="btn btn-azul" value="Yes">
+                    <% } %>
+                    <div id="message"></div>
                 </form> 
             <% } else { %>
                 <p>Please log in to confirm your attendance</p>

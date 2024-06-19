@@ -16,6 +16,8 @@ module.exports = function () {
 
     router.post('/rsvp/:slug', meetisControllerFE.rsvp);
 
+    router.get('/attendees/:slug', meetisControllerFE.showAttendees);
+
     // Sign in
     router.get('/signin', usersController.signin);
     router.post('/signin', usersController.addUser);
