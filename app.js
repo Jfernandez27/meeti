@@ -15,6 +15,7 @@ const db = require('./config/db');
 require('./models/Users');
 require('./models/Categories');
 require('./models/Groups');
+require('./models/Comments');
 require('./models/Meeti');
 
 db.sync()
