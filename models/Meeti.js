@@ -3,7 +3,6 @@ const db = require('../config/db');
 const { v4: uuid } = require('uuid');
 const slug = require('slug');
 const shortId = require('shortid');
-const { defaults } = require('pg');
 
 const Users = require('./Users');
 const Groups = require('./Groups');

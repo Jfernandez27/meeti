@@ -9,14 +9,15 @@
         <form action="/search" method="GET">
             <select name="category">
                     <option value="" selected>-- All --</option>
-                    <% categories.forEach(category => {  %>
-                        <option value="<%= category.id %>"> <%= category.name %> </option>
-                    <% }) %>
+                        <% categories.forEach(category => {  %>
+                            <option value="<%= category.id %>"> <%= category.name %> </option>
+                        <% }) %>
             </select>
             <input type="text" name="title" placeholder="Meeti Title">
             <input type="text" name="city" placeholder="City">
             <select name="country">
                 <option value="" selected>-- All --</option>
+                <option value="CHL">Chile</option>
                 <option value="MEX">México</option>
                 <option value="COL">Colombia</option>
                 <option value="ARG">Argentina</option>

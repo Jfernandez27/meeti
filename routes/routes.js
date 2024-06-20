@@ -11,6 +11,7 @@ const meetisControllerFE = require('../controllers/frontend/meetisControllerFE')
 const usersControllerFE = require('../controllers/frontend/usersControllerFE');
 const groupsControllerFE = require('../controllers/frontend/groupsControllerFE');
 const commentsControllerFE = require('../controllers/frontend/commentsControllerFE');
+const searchControllerFE = require('../controllers/frontend/searchControllerFE');
 
 module.exports = function () {
     router.get('/', homeController.home);
@@ -28,6 +29,8 @@ module.exports = function () {
     router.get('/groups/:id', groupsControllerFE.show);
 
     router.get('/category/:slug', meetisControllerFE.showCategory);
+
+    router.get('/search', searchControllerFE.search);
 
     // Sign in
     router.get('/signin', usersController.signin);
