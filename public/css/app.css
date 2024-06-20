@@ -171,7 +171,6 @@ p {
 }
 .info-autor .imagen img,
 .listado-asistentes .imagen img {
-    max-width: unset;
     width: 80px!important;
 }
 .info-autor .autor {
@@ -221,6 +220,53 @@ div.asistentes h1,
     font-size: 2rem;
 }
 
+.informacion-usuario,
+.informacion-grupo {
+        margin-top:2rem;
+}
+.informacion-grupo a.url {
+    margin-top: 1rem;
+    display: block;
+}
+@media (min-width: 660px) {
+    .informacion-usuario,
+    .informacion-grupo {
+        display: flex;
+        justify-content: space-between;
+    }
+    .informacion-usuario .imagen,
+    .informacion-grupo .imagen {
+        flex: 0 0 40%;
+    }
+    .informacion-usuario .texto,
+    .informacion-grupo .texto{
+        flex: 0 0 calc(60% - 3rem)
+    }
+}
+.informacion-usuario div,
+.informacion-grupo div  {
+    font-size: 1.2rem;
+    text-align: left;
+    line-height: 2;
+    font-weight: 400;
+    font-family:  'Raleway', sans-serif;
+}
+.lista-grupos  {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.lista-grupos li{
+    flex: 0 0 calc(50% - 1rem);
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+    .lista-grupos li{
+        flex: 0 0 calc(33.3% - 2rem);
+        
+    }
+}
 /** layout**/
 .site-header {
    text-align: center;

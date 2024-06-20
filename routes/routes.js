@@ -8,15 +8,23 @@ const groupsController = require('../controllers/groupsController');
 const meetisController = require('../controllers/meetisController');
 
 const meetisControllerFE = require('../controllers/frontend/meetisControllerFE');
+const usersControllerFE = require('../controllers/frontend/usersControllerFE');
+const groupsControllerFE = require('../controllers/frontend/groupsControllerFE');
 
 module.exports = function () {
     router.get('/', homeController.home);
 
-    router.get('/meeti/:slug', meetisControllerFE.showMeeti);
+    router.get('/meetis/:slug', meetisControllerFE.show);
 
     router.post('/rsvp/:slug', meetisControllerFE.rsvp);
 
     router.get('/attendees/:slug', meetisControllerFE.showAttendees);
+
+    router.get('/users/:id', usersControllerFE.show);
+
+    router.get('/groups/:id', groupsControllerFE.show);
+
+    router.get('/category/:slug', meetisControllerFE.showCategory);
 
     // Sign in
     router.get('/signin', usersController.signin);

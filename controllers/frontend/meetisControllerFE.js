@@ -1,15 +1,23 @@
 const Meeti = require('../../models/Meeti');
 const Groups = require('../../models/Groups');
 const Users = require('../../models/Users');
+const Categories = require('../../models/Categories');
 const moment = require('moment');
 const Sequelize = require('sequelize');
 
-exports.showMeeti = async (req, res) => {
+exports.show = async (req, res) => {
     const meeti = await Meeti.findOne({
-        where: { slug: req.params.slug },
+        where: {
+            slug: req.params.slug,
+        },
         include: [
-            { model: Groups },
-            { model: Users, attributes: ['id', 'name', 'image'] },
+            {
+                model: Groups,
+            },
+            {
+                model: Users,
+                attributes: ['id', 'name', 'image'],
+            },
         ],
     });
 
@@ -17,6 +25,7 @@ exports.showMeeti = async (req, res) => {
         req.flash('error', 'Invalid operation');
         res.redirect('/');
     }
+
     res.render('frontend/showMeeti', { headLine: meeti.title, meeti, moment });
 };
 exports.rsvp = async (req, res) => {
@@ -64,8 +73,38 @@ exports.showAttendees = async (req, res) => {
         },
     });
 
-    res.render('meeties/attendees', {
+    res.render('frontend/attendees', {
         headLine: 'Attendees List',
         attendees,
+    });
+};
+exports.showCategory = async (req, res, next) => {
+    const category = await Categories.findOne({
+        attributes: ['id', 'name'],
+        where: {
+            slug: req.params.slug,
+        },
+    });
+
+    if (!category) {
+        res.redirect('/');
+        return next();
+    }
+    const meetis = await Meeti.findAll({
+        include: [
+            {
+                model: Groups,
+                where: { categoryId: category.id },
+            },
+            {
+                model: Users,
+            },
+        ],
+    });
+
+    res.render('category', {
+        headLine: `Category: ${category.name}`,
+        meetis,
+        moment,
     });
 };

@@ -40,7 +40,7 @@
                     <% moment.locale('en') %>
                     <% const date =`${meeti.date} ${meeti.time}` %>
                     <p class="fecha"><%= moment(date).format('LLLL') %></p>
-                    <a href="/meeti/<%= meeti.slug %>">
+                    <a href="/meetis/<%= meeti.slug %>">
                         <h3><%= meeti.title %></h3>
                     </a>
                     <div class="info-autor">
