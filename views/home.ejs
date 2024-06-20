@@ -33,32 +33,9 @@
     <h2>Next Meeti's</h2>
     <div class="grid columnas-md-3 ">
         <% if(meetis.length > 0 ) { %>
-            <% meetis.forEach(meeti => { %>
-            <div class="card">
-                <img src="/uploads/groups/<%= meeti.group.image %>" class="imagen-grupo" alt="meeti.name">
-                <div class="card-texto">
-                    <% moment.locale('en') %>
-                    <% const date =`${meeti.date} ${meeti.time}` %>
-                    <p class="fecha"><%= moment(date).format('LLLL') %></p>
-                    <a href="/meetis/<%= meeti.slug %>">
-                        <h3><%= meeti.title %></h3>
-                    </a>
-                    <div class="info-autor">
-                        <% if (meeti.user.image) { %>
-                            <div class="imagen">
-                                <img src="/uploads/profiles/<%= meeti.user.image %>" alt="">
-                            </div>
-                        <% } else { %>
-                            <div class="imagen"></div>
-                        <% } %>
-                        <div class="informacion">
-                            <p>Hosted by</p>
-                            <p class="autor"><%= meeti.user.name %></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <% }) %>
+            <% meetis.forEach(meeti => { %> 
+                <%- include ('partials/card-meeti.ejs',{meeti: meeti}) %>
+            <% }) %>
         <% } %>
     </div>
 </div>

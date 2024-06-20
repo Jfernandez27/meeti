@@ -785,3 +785,16 @@ aside img {
 .card .imagen-grupo{
     min-width: -webkit-fill-available;
 }
+
+@media (min-width: 768px) {
+    .cercanos {
+        display: flex;
+        justify-content: space-between;
+    }
+    .cercanos .card {
+        flex: 0 0 calc(33.3% - 2rem);
+    }
+    .cercanos .informacion {
+        flex: 1;
+    }
+}
