@@ -52,24 +52,49 @@
             </div>
             <div class="comentarios">
                 <h2>Comments</h2>
-                <div class="comentario">
-                    <div class="imagen"></div>
-                    <div class="texto">
-                        <p>Hi</p>
-                        <p>Written by: <span>Jesus</span></p>
-                        <input type="button" value="Delete" class="btn btn-azul">
-                    </div>
-                </div>
-                <form action="#" class="default-form comentarios">
-                    <legend>Add a Comment</legend>
-                    <div class="campo">
-                        <label for="comment">Comment</label>
-                        <textarea name="comment" id=""></textarea>
-                    </div>
-                    <div class="campo enviar">
-                        <input type="submit" value="Send" class="btn btn-rosa">
-                    </div>
-                </form>
+                <% if(comments.length > 0){ %>
+                    <% comments.forEach(comment => { %>
+                        <div class="comentario">
+                            <div class="imagen">
+                                <% if (comment.user.image) { %>
+                                    <img src="/uploads/profiles/<%= comment.user.image %>" alt="">
+                                <% } %>
+                            </div>
+                            <div class="texto">
+                                <p><%= comment.message %></p>
+                                <p>Written by: <a href="/users/<%= comment.user.id %>">
+                                    <span><%= comment.user.name %></span>
+                                </a></p>
+                                <% if(comment.userId === user.id || meeti.userId === user.id){ %>
+                                    <form action="/comment/delete" method="POST" class="eliminar-comentario">
+                                        <input type="hidden" name="commentId" value="<%= comment.id %>">
+                                        <input type="submit" value="Delete" class="btn btn-azul">
+
+                                    </form>
+                                <% } %>
+                            </div>
+                        </div>
+                    <% }); %>
+                    
+                <% } else { %>
+                    <p>There are no comments yet</p>
+                <% } %>
+                
+                <!-- COMMENTS FORM -->
+                <% if(user.id){ %>
+                    <form action="/meetis/<%= meeti.id %>" method="POST" class="default-form comentarios">
+                        <legend>Add a Comment</legend>
+                        <div class="campo">
+                            <label for="comment">Comment</label>
+                            <textarea name="comment" id=""></textarea>
+                        </div>
+                        <div class="campo enviar">
+                            <input type="submit" value="Send" class="btn btn-rosa">
+                        </div>
+                    </form>
+                <% } else { %>
+                    <p>Please log in to add a comment</p>
+                <% } %>
             </div>
         </div>
 

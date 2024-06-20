@@ -10,11 +10,14 @@ const meetisController = require('../controllers/meetisController');
 const meetisControllerFE = require('../controllers/frontend/meetisControllerFE');
 const usersControllerFE = require('../controllers/frontend/usersControllerFE');
 const groupsControllerFE = require('../controllers/frontend/groupsControllerFE');
+const commentsControllerFE = require('../controllers/frontend/commentsControllerFE');
 
 module.exports = function () {
     router.get('/', homeController.home);
 
     router.get('/meetis/:slug', meetisControllerFE.show);
+    router.post('/meetis/:id', commentsControllerFE.addComment);
+    router.post('/comment/delete', commentsControllerFE.deleteComment);
 
     router.post('/rsvp/:slug', meetisControllerFE.rsvp);
 

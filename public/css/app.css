@@ -734,6 +734,16 @@ trix-toolbar .trix-button--icon-strike {
     margin: 0;
 }
 
+.comentario span {
+    color: #0F4C5C;
+    font-weight: bold;
+}
+
+.comentario #eliminar,
+.eliminar-comentario {
+    margin-top: 2rem;
+}
+
 
 /** Sidebar **/
 .contenido-evento aside {

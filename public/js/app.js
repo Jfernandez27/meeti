@@ -1,13 +1,11 @@
 // import
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import attendance from './attendance';
+import deleteComment from './deleteComment';
 
 const lat = getElementValue('#lat', -33.4379202401447);
 const lng = getElementValue('#lng', -70.6500000000001);
 const add = getElementValue('#address', '');
-// const lat = document.querySelector('#lat').value || -33.4379202401447;
-// const lng = document.querySelector('#lng').value || -70.65038985314246;
-// const add = document.querySelector('#address').value || '';
 
 var mapElement = document.getElementById('map');
 
@@ -62,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
     //Clean Alerts
     let alerts = document.querySelector('.alertas');
     if (alerts) {
-        console.log('Si hay');
         cleanAlerts();
     }
 });
